@@ -1,0 +1,169 @@
+# PulsePoint Configuration File
+# This is an example configuration file for PulsePoint
+# Copy this file to ~/.pulsepoint/config.yaml and modify as needed
+
+version: 1.0
+
+# Pulse (sync) settings
+pulse:
+  # Sync interval (e.g., 30s, 1m, 5m, 10m)
+  interval: 30s
+  
+  # Number of files to process in a single batch
+  batch_size: 10
+  
+  # Chunk size for large file uploads
+  chunk_size: 5MB
+  
+  # Maximum number of retry attempts for failed operations
+  max_retries: 3
+  
+  # Conflict resolution strategy
+  # Options: keep_local, keep_remote, keep_both, interactive
+  conflict_strategy: keep_both
+
+# File monitoring settings
+monitoring:
+  # Debounce time for file changes (prevents rapid successive events)
+  debounce: 100ms
+  
+  # Maximum file size to sync (files larger than this are skipped)
+  max_file_size: 100MB
+  
+  # Patterns to ignore (gitignore style)
+  ignore_patterns:
+    - "*.tmp"
+    - "*.swp"
+    - ".DS_Store"
+    - "Thumbs.db"
+    - ".git/*"
+    - "node_modules/*"
+    - "*.log"
+    - "~*"
+    - ".cache/*"
+
+# Sync paths configuration
+paths:
+  - name: "Documents"
+    local: "/Users/username/Documents"
+    remote: "/PulsePoint/Documents"
+    recursive: true
+    enabled: true
+    
+  - name: "Projects"
+    local: "/Users/username/Projects"
+    remote: "/PulsePoint/Projects"
+    recursive: true
+    enabled: false
+    ignore:
+      - "build/*"
+      - "dist/*"
+      - "*.pyc"
+
+# Performance settings
+performance:
+  # Maximum number of concurrent uploads
+  max_concurrent_uploads: 3
+  
+  # Maximum number of concurrent downloads
+  max_concurrent_downloads: 3
+  
+  # API rate limit (requests per second)
+  rate_limit: 10
+  
+  # Cache time-to-live in seconds
+  cache_ttl: 300
+  
+  # Bandwidth limit in MB/s (0 = unlimited)
+  bandwidth_limit: 0
+
+# Logging configuration
+logging:
+  # Log level: debug, info, warn, error
+  level: info
+  
+  # Log file path
+  file: "~/.pulsepoint/logs/pulsepoint.log"
+  
+  # Maximum log file size in MB before rotation
+  max_size: 100
+  
+  # Number of backup files to keep
+  max_backups: 5
+  
+  # Maximum age of log files in days
+  max_age: 30
+  
+  # Compress rotated log files
+  compress: true
+
+# Provider-specific settings
+providers:
+  google:
+    # Google Drive specific settings
+    client_id: ""
+    client_secret: ""
+    
+    # Folder ID for the root sync folder (optional)
+    root_folder_id: ""
+    
+    # File types to convert on upload
+    convert_on_upload:
+      - from: ".docx"
+        to: "application/vnd.google-apps.document"
+    
+    # Skip Google Docs/Sheets/Slides files
+    skip_google_docs: false
+
+# Advanced settings
+advanced:
+  # Database path for state management
+  database_path: "~/.pulsepoint/db/pulse.db"
+  
+  # Enable experimental features
+  experimental_features: false
+  
+  # Health check interval
+  health_check_interval: 5m
+  
+  # Automatic cleanup of old logs and cache
+  auto_cleanup: true
+  
+  # Cleanup interval
+  cleanup_interval: 24h
+
+# Notification settings (optional)
+notifications:
+  # Enable notifications
+  enabled: false
+  
+  # Notification types
+  types:
+    - sync_complete
+    - sync_error
+    - quota_warning
+  
+  # Desktop notifications (macOS/Linux/Windows)
+  desktop: true
+  
+  # Email notifications
+  email:
+    enabled: false
+    smtp_host: ""
+    smtp_port: 587
+    from: ""
+    to: ""
+
+# Security settings
+security:
+  # Encrypt credentials at rest
+  encrypt_credentials: true
+  
+  # Use OS keychain for credential storage
+  use_keychain: true
+  
+  # Verify SSL certificates
+  verify_ssl: true
+  
+  # Allowed IP ranges for API access (if applicable)
+  allowed_ips: []
