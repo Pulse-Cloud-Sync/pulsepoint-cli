@@ -416,6 +416,10 @@ func TestEnginePauseResume(t *testing.T) {
 	err = engine.Start(ctx)
 	require.NoError(t, err)
 
+	// Give goroutines time to start and call Watch()/Errors()
+	// This prevents race condition in test environments like GitHub Actions
+	time.Sleep(50 * time.Millisecond)
+
 	// Pause engine
 	err = engine.Pause()
 	require.NoError(t, err)
